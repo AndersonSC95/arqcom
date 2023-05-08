@@ -1,37 +1,33 @@
 .data 
 sopa: .asciiz "sopa.txt"
-der: .asciiz "\n La palabra se orienta hacia la derecha"
-izq: .asciiz "\n La palabra se orienta hacia la izquierda"
-arr: .asciiz "\n La palabra se orienta la arriba"
-aba: .asciiz "\n La palabra se orienta hacia la abajo"
+der: .asciiz "\n La palabra se orienta hacia la derecha \n"
+izq: .asciiz "\n La palabra se orienta hacia la izquierda \n"
+arr: .asciiz "\n La palabra se orienta la arriba \n"
+aba: .asciiz "\n La palabra se orienta hacia la abajo \n"
 cord: .asciiz "La palabra inicia en: "
 fila: .asciiz "\n fila: "
 col: .asciiz "\n columna: "
-none : .asciiz "No se encontro la palabra\n"
-??? : .asciiz "Quieres buscar otra Palabra?\ny. ppara continuar buscando palabras\nn. para no buscar mas palabras\n"
-nuevapalabra: .space 100 #palabra nueva que usuario ingresaria
-resusuario: .space 3 #respuesta usuario
-yes:  .asciiz "y"	# Caracter de y
-nope: .asciiz "n"	# Caracter de n
+nuevapalabra: .space 100 #memoria que se utliza para nueva palabra que el usuario ingresaria
+resusuario: .space 3 #memoria que se utliza para respuesta usuario
+yes:  .asciiz "y"	# Caracter y
+palabras: .space 100 	#memoria que se utliza para letra del usuario
 #mensajes 
-intro: .asciiz 		"\n Ingrese la palabra a buscar en la sopa de letras:\n "
-palabras: .space 100 	# direcci�n de las palabras que escribir� el usuario
-					
-.align 2
-archivo: .space 5100	# direcci�n de la url del archivo ingresada por el user
-.align 2
-archivolimpio: .space 5100 
+intro: .asciiz 	"\n Ingrese la palabra a buscar en la sopa de letras:\n "
+none : .asciiz 	"No se encontro la palabra\n"
+pregunta: .asciiz "Quieres buscar otra Palabra?\ny para continuar buscando palabras\nusa CUALQUIER OTRA paterminar\n"					
 
+.align 2
+archivo: .space 5100		# memoria que se utliza para importar la sopa de letras.
+.align 2
+archivolimpio: .space 5100 	# memoria que se utliza para almacenar la sopa de letras limpia.
 .text
 
-main: 						# Subrutina: main (Inicio del Programa)
+main: 				# main:(Inicio del Programa)
 	
-	jal	importar
-	jal 	leer 			# rutina principal, jump and link 
-	jal	buscar
-	j 	exit    
-
-                  
+	jal	importar	# importa la sopa de letras
+	jal 	leer 		# ejecuta el metodo leer 
+	jal	buscar		# ejecuta el metodo buscar
+	j 	exit            # ejecuta el metodo salir          
 
 importar:
 	#Open file
@@ -64,20 +60,23 @@ chao:
       	
 
 leer:
-	li $v0, 4		#\
-	la $a0, intro	# Write message
-	syscall			#/
-	li $v0, 8		#\
-	la $a0, palabras	# \
-	li $a1, 100		#  Read word to find
-	syscall			# /
+	#escribe mensaje
+	li $v0, 4		
+	la $a0, intro	
+	syscall		
+	
+	#lee la palabra a buscar		
+	li $v0, 8		
+	la $a0, palabras	
+	li $a1, 100		
+	syscall			
 	jr $ra
 
 buscar:
 	la $t1,archivolimpio
 	la $s1,palabras
-	li $a2,1	#Filas
-	li $a3,1	#Columnas
+	li $a2,1		#Filas
+	li $a3,1		#Columnas
 	lb $t3,0($s1)
 	li $t9,0
 loopsopa:	
@@ -91,43 +90,7 @@ loopsopa:
 	li $a3,1 
 	j loopsopa
 	
-avanza:
-     	li $v0, 4
- 	la $a0, none
- 	syscall
- 	li $v0,4
- 	la $a0,???
- 	syscall
- 	li $v0,8
- 	la $a0,nuevapalabra
- 	li $a1, 3
- 	syscall
- 	
- 	la $t1, resusuario				# guardamos la direcci�n la direcci�n de memoria en el cpu, en el registro $t1	
-    	add $s3, $t1, $zero
-    	lb $t6, 0($t1)
- 	
- 	lb $t8, yes		# Cargo el valor de y en la variable temporal $t2
- 	
- 	beq $t6, $t8, buscar
-	li $v0, 4
- 	la $a0, programaFinaliza
- 	syscall 		
- 	j exit
- 	
- 	
- 		
- 		
- 	
-       
-    		
-
-    		
-    		
-		
-		
-     
-     	 	 
+	 	 
 arriba:	
 	move $s3,$t1	#copia sopa en s3
 	move $s4,$s1	#copia palabras usuario a s4
@@ -170,7 +133,7 @@ derechaloop:
 	lb $t5,0($s4)	# caracter palabra usuario
 	li $t9,3
 	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
-	beq $s6,52,izquierda         #dado que no cumple pasa a la otra busqueda
+	beq $t4,0x0a,izquierda       #dado que no cumple pasa a la otra busqueda
 	beq $t4,$t5,derechaloop	
 izquierda:
 	move $s3,$t1
@@ -184,12 +147,13 @@ izquierdaloop:
 	lb $t5,0($s4)	# caracter palabra usuario
 	li $t9,4
 	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
-	beq $s6,0,avanza         #dado que no cumple pasa a la otra busqueda
+	beq $t4,0x0a,preloopsopa         #dado que no cumple pasa a la otra busqueda
 	beq $t4,$t5,izquierdaloop
+preloopsopa:
 	addi $t1,$t1,1
-	addi $a3,$a3,1
-	j loopsopa
-	#no encontro la palabra  
+	addi $a3,$a3,1	
+	j loopsopa	#no encontro la palabra  
+	
 imprimirexitoso:	
 	beq $t9, 1, imparri
 	beq $t9, 2, impaba
@@ -218,7 +182,7 @@ imparri:
  	li $v0, 4
 	la $a0, arr
  	syscall
- 	jr $ra # de momento hay que cofg
+ 	j exito # va hacia metodo que pregunta al usuario si quiere continuar
 impaba: 
 #imprimimos s5 y a3
 	li $v0, 4
@@ -242,7 +206,7 @@ impaba:
  	li $v0, 4
 	la $a0, aba
  	syscall
- 	jr $ra # de momento hay que cofg
+ 	j exito # va hacia metodo que pregunta al usuario si quiere continuar
 impder: 
 #imprimimos s6 y a2
 	li $v0, 4
@@ -266,7 +230,8 @@ impder:
  	li $v0, 4
 	la $a0, der
  	syscall
- 	jr $ra # de momento hay que cofg
+ 	j exito # va hacia metodo que pregunta al usuario si quiere continuar
+ 	
 impizq: 
 #imprimimos s6 y a2
 	li $v0, 4
@@ -290,8 +255,31 @@ impizq:
  	li $v0, 4
 	la $a0, izq
  	syscall
- 	jr $ra # de momento hay que cofg
-		
+ 	j exito
+avanza:
+     	li $v0, 4
+ 	la $a0, none
+ 	syscall
+ 	
+ 	
+exito: 	
+	li $v0,4
+ 	la $a0,pregunta
+ 	syscall
+ 	li $v0,8
+ 	la $a0,nuevapalabra
+ 	li $a1, 3
+ 	syscall
+ 	
+ 	la $t1, resusuario				# guardamos la direcci�n la direcci�n de memoria en el cpu, en el registro $t1	
+    	add $s3, $t1, $zero
+    	lb $t6, 0($t1)
+ 	
+ 	lb $t8, yes		# Cargo el valor de y en la variable temporal $t2
+ 	
+ 	beq $t6, $t8, buscar	
+ 	j exit
+ 					
 						
 exit: 	li $v0, 10		# Constante para terminar el programa
 	syscall      
