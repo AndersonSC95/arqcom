@@ -118,10 +118,37 @@ abajoloop
 	lb $t4,0($s3) 	#caracter sopa
 	lb $t5,0($s4)	# caracter palabra usuario
 	li $t9,2
-	beq $t5,0x0a,imprimirexitoso
-	beq $s5,51,derecha
+	beq $t5,0x0a,imprimirexitoso #cumple hacia abajo todo
+	beq $s5,51,derecha    		#dado que no cumple pasa a la otra busqueda
 	beq $t4,$t5,abajoloop
-
+derecha: 
+	move $s3,$t1
+	move $s4,$s1
+	move $s6,$a3
+derechaloop:
+	addi $s3,$s3,1
+	addi $s4,$s4,1
+	addi $s6,$s6,1	
+	lb $t4,0($s3) 	#caracter sopa
+	lb $t5,0($s4)	# caracter palabra usuario
+	li $t9,3
+	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
+	beq $s6,51,izquierda         #dado que no cumple pasa a la otra busqueda
+	beq $t4,$t5,derechaloop	
+izquierda:
+	move $s3,$t1
+	move $s4,$s1
+	move $s6,$a3
+izquierdaloop:
+	addi $s3,$s3,-1
+	addi $s4,$s4,1
+	addi $s6,$s6,-1	
+	lb $t4,0($s3) 	#caracter sopa
+	lb $t5,0($s4)	# caracter palabra usuario
+	li $t9,3
+	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
+	beq $s6,0,avanza         #dado que no cumple pasa a la otra busqueda
+	beq $t4,$t5,derechaloop
 	#no encontro la palabra  
 imprimirexitoso:	
 		
