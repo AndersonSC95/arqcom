@@ -101,7 +101,7 @@ arriba:
 	move $s4,$s1	#copia palabras usuario a s4
 	move $s5,$a2	#copia filas a s5
 arribaloop:	
-	addi $s3,$s3,-50
+	addi $s3,$s3,-51
 	addi $s4,$s4,1
 	addi $s5,$s5,-1	
 	lb $t4,0($s3) 	#caracter sopa
@@ -117,7 +117,7 @@ abajo:
 	move $s5,$a2	#copia filas a s5
 	
 abajoloop:		
-	addi $s3,$s3,50
+	addi $s3,$s3,51
 	addi $s4,$s4,1
 	addi $s5,$s5,1	
 	lb $t4,0($s3) 	#caracter sopa
@@ -138,7 +138,7 @@ derechaloop:
 	lb $t5,0($s4)	# caracter palabra usuario
 	li $t9,3
 	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
-	beq $s6,51,izquierda         #dado que no cumple pasa a la otra busqueda
+	beq $s6,52,izquierda         #dado que no cumple pasa a la otra busqueda
 	beq $t4,$t5,derechaloop	
 izquierda:
 	move $s3,$t1
@@ -154,6 +154,9 @@ izquierdaloop:
 	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
 	beq $s6,0,avanza         #dado que no cumple pasa a la otra busqueda
 	beq $t4,$t5,izquierdaloop
+	addi $t1,$t1,1
+	addi $a3,$a3,1
+	j loopsopa
 	#no encontro la palabra  
 imprimirexitoso:	
 	beq $t9, 1, imparri
