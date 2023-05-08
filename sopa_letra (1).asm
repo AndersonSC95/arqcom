@@ -93,7 +93,7 @@ avanza:
      	li $v0, 4
  	la $a0, none
  	syscall
- 	
+ 	jr $ra
      
      	 	 
 arriba:	
@@ -153,7 +153,7 @@ izquierdaloop:
 	li $t9,4
 	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
 	beq $s6,0,avanza         #dado que no cumple pasa a la otra busqueda
-	beq $t4,$t5,derechaloop
+	beq $t4,$t5,izquierdaloop
 	#no encontro la palabra  
 imprimirexitoso:	
 	beq $t9, 1, imparri
@@ -177,12 +177,13 @@ imparri:
  	la $a0, col
  	syscall 	
  	li $v0, 1
- 	la $a0, ($a2)
+ 	la $a0, ($a3)
  	syscall
  	
  	li $v0, 4
 	la $a0, arr
  	syscall
+ 	jr $ra # de momento hay que cofg
 impaba: 
 #imprimimos s5 y a3
 	li $v0, 4
@@ -193,19 +194,20 @@ impaba:
  	la $a0, fila
  	syscall 	
  	li $v0, 1
- 	la $a0, ($a2)
+ 	la $a0,($a2)
  	syscall
  	
  	li $v0, 4
  	la $a0, col
  	syscall 	
  	li $v0, 1
- 	la $a0, ($a2)
+ 	la $a0,($a3)
  	syscall
  	
  	li $v0, 4
-	la $a0, arr
+	la $a0, aba
  	syscall
+ 	jr $ra # de momento hay que cofg
 impder: 
 #imprimimos s6 y a2
 	li $v0, 4
@@ -216,19 +218,20 @@ impder:
  	la $a0, fila
  	syscall 	
  	li $v0, 1
- 	la $a0, ($a2)
+ 	la $a0,($a2)
  	syscall
  	
  	li $v0, 4
  	la $a0, col
  	syscall 	
  	li $v0, 1
- 	la $a0, ($a2)
+ 	la $a0,($a3)
  	syscall
  	
  	li $v0, 4
-	la $a0, arr
+	la $a0, der
  	syscall
+ 	jr $ra # de momento hay que cofg
 impizq: 
 #imprimimos s6 y a2
 	li $v0, 4
@@ -246,15 +249,14 @@ impizq:
  	la $a0, col
  	syscall 	
  	li $v0, 1
- 	la $a0, ($a2)
+ 	la $a0, ($a3)
  	syscall
  	
  	li $v0, 4
-	la $a0, arr
+	la $a0, izq
  	syscall
-
-			
-				
+ 	jr $ra # de momento hay que cofg
+		
 						
 exit: 	li $v0, 10		# Constante para terminar el programa
 	syscall      
