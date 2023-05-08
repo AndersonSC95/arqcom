@@ -145,13 +145,25 @@ izquierdaloop:
 	addi $s6,$s6,-1	
 	lb $t4,0($s3) 	#caracter sopa
 	lb $t5,0($s4)	# caracter palabra usuario
-	li $t9,3
+	li $t9,4
 	beq $t5,0x0a,imprimirexitoso #cumple hacia derecha todo
 	beq $s6,0,avanza         #dado que no cumple pasa a la otra busqueda
 	beq $t4,$t5,derechaloop
 	#no encontro la palabra  
 imprimirexitoso:	
-		
+	beq $t9, 1, imparri
+	beq $t9, 2, impaba
+	beq $t9, 3, impder
+	beq $t9, 4, impizq	
+imparri: 
+#imprimimos s5 y a3
+impaba: 
+#imprimimos s5 y a3
+impder: 
+#imprimimos s6 y a2
+impizq: 
+#imprimimos s6 y a2
+
 			
 				
 						
