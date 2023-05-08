@@ -1,13 +1,13 @@
 .data 
 sopa: .asciiz "sopa.txt"
-der: .asciiz "La palabra est� hacia la derecha"
-izq: .asciiz "La palabra est� hacia la izquierda"
-arr: .asciiz "La palabra est� hacia la arriba"
-aba: .asciiz "La palabra est� hacia la abajo"
-cord: .asciiz "La palabra inicia en "
+der: .asciiz "\n La palabra se orienta hacia la derecha"
+izq: .asciiz "\n La palabra se orienta hacia la izquierda"
+arr: .asciiz "\n La palabra se orienta la arriba"
+aba: .asciiz "\n La palabra se orienta hacia la abajo"
+cord: .asciiz "La palabra inicia en: "
 fila: .asciiz "\n fila: "
 col: .asciiz "\n columna: "
-none : .asciiz "\n No se encontro la palabra\n"
+none : .asciiz "No se encontro la palabra\n"
 otra : .asciiz "\n Quieres buscar otra Palabra?\ny. ppara continuar buscando palabras\nn. para no buscar mas palabras\n"
 
 #mensajes 
@@ -89,7 +89,11 @@ loopsopa:
 	j loopsopa
 	
 avanza:
-     #mesaje fallido 
+     #mesaje fallido
+     	li $v0, 4
+ 	la $a0, none
+ 	syscall
+ 	
      
      	 	 
 arriba:	
@@ -157,12 +161,96 @@ imprimirexitoso:
 	beq $t9, 4, impizq	
 imparri: 
 #imprimimos s5 y a3
+ 	li $v0, 4
+ 	la $a0, cord
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, fila
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, col
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+	la $a0, arr
+ 	syscall
 impaba: 
 #imprimimos s5 y a3
+	li $v0, 4
+ 	la $a0, cord
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, fila
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, col
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+	la $a0, arr
+ 	syscall
 impder: 
 #imprimimos s6 y a2
+	li $v0, 4
+ 	la $a0, cord
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, fila
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, col
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+	la $a0, arr
+ 	syscall
 impizq: 
 #imprimimos s6 y a2
+	li $v0, 4
+ 	la $a0, cord
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, fila
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, col
+ 	syscall 	
+ 	li $v0, 1
+ 	la $a0, ($a2)
+ 	syscall
+ 	
+ 	li $v0, 4
+	la $a0, arr
+ 	syscall
 
 			
 				
