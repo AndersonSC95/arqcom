@@ -93,9 +93,9 @@ avanza:
      
      	 	 
 arriba:	
-	move $s3,$t1
-	move $s4,$s1
-	move $s5,$a2
+	move $s3,$t1	#copia sopa en s3
+	move $s4,$s1	#copia palabras usuario a s4
+	move $s5,$a2	#copia filas a s5
 arribaloop:	
 	addi $s3,$s3,-50
 	addi $s4,$s4,1
@@ -108,9 +108,9 @@ arribaloop:
 	beq $t4,$t5,arribaloop
 
 abajo:
-	move $s3,$t1
-	move $s4,$s1
-	move $s5,$a2
+	move $s3,$t1 	#copia sopa en s3
+	move $s4,$s1	#copia palabras usuario a s4
+	move $s5,$a2	#copia filas a s5
 abajoloop		
 	addi $s3,$s3,50
 	addi $s4,$s4,1
