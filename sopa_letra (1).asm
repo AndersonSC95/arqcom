@@ -8,8 +8,11 @@ cord: .asciiz "La palabra inicia en: "
 fila: .asciiz "\n fila: "
 col: .asciiz "\n columna: "
 none : .asciiz "No se encontro la palabra\n"
-otra : .asciiz "\n Quieres buscar otra Palabra?\ny. ppara continuar buscando palabras\nn. para no buscar mas palabras\n"
-
+??? : .asciiz "Quieres buscar otra Palabra?\ny. ppara continuar buscando palabras\nn. para no buscar mas palabras\n"
+nuevapalabra: .space 100 #palabra nueva que usuario ingresaria
+resusuario: .space 3 #respuesta usuario
+yes:  .asciiz "y"	# Caracter de y
+nope: .asciiz "n"	# Caracter de n
 #mensajes 
 intro: .asciiz 		"\n Ingrese la palabra a buscar en la sopa de letras:\n "
 palabras: .space 100 	# direcci�n de las palabras que escribir� el usuario
@@ -89,11 +92,40 @@ loopsopa:
 	j loopsopa
 	
 avanza:
-     #mesaje fallido
      	li $v0, 4
  	la $a0, none
  	syscall
- 	jr $ra
+ 	li $v0,4
+ 	la $a0,???
+ 	syscall
+ 	li $v0,8
+ 	la $a0,nuevapalabra
+ 	li $a1, 3
+ 	syscall
+ 	
+ 	la $t1, resusuario				# guardamos la direcci�n la direcci�n de memoria en el cpu, en el registro $t1	
+    	add $s3, $t1, $zero
+    	lb $t6, 0($t1)
+ 	
+ 	lb $t8, yes		# Cargo el valor de y en la variable temporal $t2
+ 	
+ 	beq $t6, $t8, buscar
+	li $v0, 4
+ 	la $a0, programaFinaliza
+ 	syscall 		
+ 	j exit
+ 	
+ 	
+ 		
+ 		
+ 	
+       
+    		
+
+    		
+    		
+		
+		
      
      	 	 
 arriba:	
