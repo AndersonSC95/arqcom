@@ -23,8 +23,7 @@ archivo: .space 5100		# memoria que se utliza para importar la sopa de letras.
 archivolimpio: .space 5100 	# memoria que se utliza para almacenar la sopa de letras limpia.
 .text
 
-main: 				# main:(Inicio del Programa)
-	
+main: 				# main:(Inicio del Programa)	
 	jal	importar	# importa la sopa de letras
 otra:
 	jal 	leer 		# ejecuta el metodo leer 
@@ -61,7 +60,7 @@ chao:
 	jr $ra	      		
 
 leer:
-	#escribe mensaje "intro"
+	#imprime mensaje "intro"
 	li $v0, 4		
 	la $a0, intro	
 	syscall		
@@ -166,103 +165,135 @@ imprimirexitoso:
 
 #con este metodo imprime con orientacion arriba	
 imparri: 
+	#imprime mensaje
  	li $v0, 4
  	la $a0, cord
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, fila
  	syscall 	
+ 	
+ 	#imprime el # fila
  	li $v0, 1
  	la $a0, ($a2)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, col
  	syscall 	
+ 	
+ 	#imprime el # columna
  	li $v0, 1
  	la $a0, ($a3)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
 	la $a0, arr
  	syscall
- 	j exito # va hacia metodo que pregunta al usuario si quiere continuar
+ 	j exito #va hacia metodo que pregunta al usuario si quiere continuar
  
 #con este metodo imprime con orientacion abajo	
 impaba: 
+	#imprime mensaje
 	li $v0, 4
  	la $a0, cord
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, fila
  	syscall 	
+ 	
+ 	#imprime el # fila
  	li $v0, 1
  	la $a0,($a2)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, col
- 	syscall 	
+ 	syscall 
+ 	
+ 	#imprime el # columna
  	li $v0, 1
  	la $a0,($a3)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
 	la $a0, aba
  	syscall
- 	j exito # va hacia metodo que pregunta al usuario si quiere continuar
+ 	j exito #va hacia metodo que pregunta al usuario si quiere continuar
  
 #con este metodo imprime con orientacion derecha
 impder: 
+	#imprime mensaje
 	li $v0, 4
  	la $a0, cord
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, fila
  	syscall 	
+ 	
+ 	#imprime el # fila
  	li $v0, 1
  	la $a0,($a2)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, col
- 	syscall 	
+ 	syscall 
+ 	
+ 	#imprime el # columna
  	li $v0, 1
  	la $a0,($a3)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
 	la $a0, der
  	syscall
- 	j exito # va hacia metodo que pregunta al usuario si quiere continuar
+ 	j exito #va hacia metodo que pregunta al usuario si quiere continuar
 
 #con este metodo imprime con orientacion izquierda	
 impizq: 
+	#imprime mensaje
 	li $v0, 4
  	la $a0, cord
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, fila
  	syscall 	
+ 	
+ 	#imprime el # fila
  	li $v0, 1
  	la $a0, ($a2)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
  	la $a0, col
+ 	
+ 	#imprime el # columna
  	syscall 	
  	li $v0, 1
  	la $a0, ($a3)
  	syscall
  	
+ 	#imprime mensaje
  	li $v0, 4
 	la $a0, izq
  	syscall
- 	j exito
+ 	j exito	#va hacia metodo que pregunta al usuario si quiere continuar
  	
 #este metodo imprime  un mensaje si no se encontro la palabra	
 avanza:
@@ -272,20 +303,21 @@ avanza:
 
 #este metodo pregunta al usuario si quiere seguir buscando mas palabras
 exito: 	
+	#imprime
 	li $v0,4
  	la $a0,pregunta
  	syscall
+ 	#lee la respuesta del usuario
  	li $v0,8
  	la $a0,resusuario
  	li $a1,3
  	syscall
  	
  	la $t1, resusuario	#llevamos la respuesta al usuario al registro t1
-    	add $s3, $t1, $zero	
-    	lb $t6, 0($t1)
+    	lb $t6, 0($t1)		#llevamos el caracter a t6
  	
  	lb $t8, yes    		#cargamos el caracter "y"
- 	beq $t6, $t8,otra 	#si el usurio escribe "y" el programa continuara...
+ 	beq $t6,$t8,otra 	#si el usurio escribe "y" el programa continuara...
  	j exit			# de lo contrario terminara
  					
 #para terminar el programa						
